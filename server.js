@@ -6,12 +6,13 @@ const express = require('express')
 const app = express()
 const expressLayouts = require('express-ejs-layouts')
 const bodyParser = require('body-parser')
-const path = require('path')
+// const path = require('path')
 
 
 
 const indexRouter = require('./routes/index')
 const actorRouter = require('./routes/actors')
+const filmRouter = require('./routes/films')
 
 
 
@@ -37,15 +38,18 @@ app.set('layout', 'layouts/layout')
 
 app.use(expressLayouts )
 app.use(express.static('public'))
-app.use(express.json())
 app.use(bodyParser.urlencoded({limit: '10mb', extended: false }))
 
+/* app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+ */
 
 // Possible mongoose line
 
 //Point to router in question
 app.use('/', indexRouter)//Points to index.js in the root folder
 app.use('/actors', actorRouter)//Views folder/actors
+app.use('/films', filmRouter)//Views folder/actors
 
 
 app.listen(process.env.PORT || 3000)

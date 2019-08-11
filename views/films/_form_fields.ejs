@@ -1,0 +1,55 @@
+<div><label>Title:</label>
+<input type="text" name="title" value="<%= film.title %>">
+</div>
+
+<br>
+
+<div>
+<label>Actor:</label>
+<select name="actor">
+
+<% actors.forEach(actor => { %>
+
+<% if (actor.id === film.actor) { %>
+
+<option selected label="<%= actor.name %>" value="<%= actor.id %>">
+
+<% } else { %>
+
+<option label="<%= actor.name %>" value="<%= actor.id %>">
+
+<% } %> 
+
+<% }) %> 
+
+</select>
+</div>
+
+<br>
+
+<div>
+<label>Publish Date:</label>
+<input type="date" name="publishDate" value="<%= film.publishDate == null ? '' :
+ film.publishDate.toISOString().split('T')[0] %>">
+</div>
+
+<br>
+
+<div>
+<label>Scene Count:</label>
+<input type="number" name="sceneCount" min="1" value="<%= film.sceneCount %>">
+</div>
+
+<br>
+
+<div>
+<label>Cover:</label>
+<input type="file" name="cover">
+</div>
+
+<br>
+
+<div>
+<label>Description:</label>
+<textarea name="description"><%= film.description %></textarea>
+</div>
