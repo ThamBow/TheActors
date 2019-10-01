@@ -1,20 +1,10 @@
 const express = require('express')
 const router = express.Router()
-const fs = require('fs')
-const multer = require('multer')
-const path = require('path') //Require this in order to use variable from film model
 const Film = require('../models/film')
 const Actor = require('../models/actor')
-const uploadPath = path.join('public', Film.coverImageBasePath)
-const imageMimeTypes = ['images/jpeg', 'images/png', 'images/gif']
-const upload = multer({
-dest: uploadPath,
-fileFilter: (req, file, callback) => {
+//const mime = require('mime-types')
+const imageMimeTypes = ['image/png', 'image/jpeg', 'image/gif']
 
-    callback(null, uploadPath/* imageMimeTypes.includes(file.mimetype) */)
-
-  }
-})
 
 //All films route
 router.get('/', async (req, res) => {
@@ -35,16 +25,14 @@ router.get('/', async (req, res) => {
         query = query.gte('publishDate', req.query.publishedAfter)//Filter by published after on searching
     }
 
-
-
-    const films = await query.exec()
-    res.render('films/index', {
+    
+    try {
+        const films = await query.exec()
+        res.render('films/index', {
         films:films,
         searchOptions: req.query
 
     })
-    try {
-        
     } catch (error) {
         res.redirect('/')
     }
@@ -53,52 +41,40 @@ router.get('/', async (req, res) => {
 //New films route
 router.get('/new', async (req, res) => {
 
-    renderNewPage(res, new Film())
+     renderNewScene(res, new Film())
     
-})
+})  
  
 
 //Create film route
-router.post('/', upload.single("cover"), async (req, res) => {
-
-    let fileName = req.file != null ? req.file.filename : null //If filename not equal to null, get filename, else if so return null(:). Assign req.filename to const 'filename'
-   
+router.post('/',  async (req, res) => { 
     
     const film =  new Film({
         title: req.body.title,
         actor: req.body.actor,
         publishDate: new Date(req.body.publishDate),
         sceneCount: req.body.sceneCount,
-        coverImageName: fileName,
         description: req.body.description
     })
-     console.log(req.body.coverImageName)
-   
+     //console.log(req.body.coverImageName)
+    saveCover(film, req.body.cover)
     
     try {
         const newFilm = await film.save()
         //res.redirect(`films/${newFilm.id}`)
         
         res.redirect(`films`) 
-    } catch (error) {
+    } catch (error){
 
-        if (film.coverImageName != null){
-            removeFilmCover(film.coverImageName)
-        }
-        
-         //console.log(err)
-        renderNewPage(res, film, true)
+        renderNewScene(res, film, true)
+        //return res.send(error.message)
     }
 
     
 })
 
-function removeFilmCover(fileName){
-    fs.unlink(path.join(uploadPath, fileName), err => {
-        if (err) console.error(err)
-    })
-}
-async function renderNewPage(res, film, hasError = false){
+
+async function renderNewScene(res, film, hasError = false){
     
     try {
         const actors = await Actor.find({})
@@ -107,42 +83,32 @@ async function renderNewPage(res, film, hasError = false){
             actors: actors,
             film: film
         }
-        if (hasError) params.errorMessage = 'Error Creating Film'
+        if (hasError) {params.errorMessage = 'Error Creating Film'}
 
         
         res.render('films/new', params)
-
-    } catch (e) {
-        console.error(e)
+      
+    } catch (error) {
+        // console.error(e)
+        // console.error(error)
         res.redirect('/films')
        
         }
+        
+} 
 
+
+
+ function saveCover(film, coverEncoded){
+    //console.log(coverEncoded)
+    
+    if (coverEncoded == null) return /* new Promise(function(resolve){}) */
+    
+    const cover =  JSON.parse(coverEncoded)
+    if(cover != null && imageMimeTypes.includes(cover.type)){
+        film.coverImage = new Buffer.from(cover.data, 'base64')
+        film.coverImageType = cover.type
+    } 
+    //console.log(cover)
 }
 module.exports = router
-
-
-
-
-
-
-
-
-
-/* let actor = new Actor();
-    
-   name = req.body.name;
-  
-    actor.save(function(err, newActor){
-
-        if(err){
-            errorMessage: 'Error creating Actor!'
-            return;
-        }
-
-        else {
-           //res.redirect(`actors/${newActor.id}`)
-           actor: actor,
-           res.redirect(`actors`)
-        }
-    }) */

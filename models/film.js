@@ -1,6 +1,4 @@
 const mongoose = require('mongoose')
-const path = require('path')
-const coverImageBasePath = 'uploads/filmCovers' //Path to where images to be stored, not hardcoded in films.js(multer)
 
 const filmSchema = new mongoose.Schema({
 
@@ -24,10 +22,14 @@ const filmSchema = new mongoose.Schema({
         required: true,
         default: Date.now
     },
-    coverImageName:{
+    coverImage:{
+        type: Buffer,
+        required: true
+         
+    },
+    coverImageType:{
         type: String,
-        required: [true, 'This is required']
-        
+        required: true
     },
     actor: {
         type: mongoose.Schema.Types.ObjectId,
@@ -37,12 +39,13 @@ const filmSchema = new mongoose.Schema({
 
 })
 filmSchema.virtual('coverImagePath').get(function(){
-if(this.coverImageName != null){
-    return path.join('/', coverImageBasePath, this.coverImageName)
+if(this.coverImage != null && this.coverImageType != null){
+    return `data:${this.coverImageType};charset=utf-8;base64,
+    ${this.coverImage.toString('base64')}`
 }
 
 })
 
 module.exports = mongoose.model('Film', filmSchema)
-module.exports.coverImageBasePath = coverImageBasePath //Path to where images to be stored exported as named variable here
-//console.log(filmSchema.path('coverImageName'))
+
+

@@ -44,7 +44,7 @@ router.post('/', async (req, res ) => {
     try {
         const newActor = await actor.save()
         //res.redirect(`actors/${newActor.id}`)
-        res.redirect(`actors`)
+        res.redirect(`actors`) 
 
     } catch (err){
         
