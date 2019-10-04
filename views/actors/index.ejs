@@ -15,5 +15,10 @@
 <% actors.forEach(actor => { %>
 
 <div><%= actor.name %></div>
+<a href="/actors/<%= actor.id %>">View</a>
+<a href="/actors/<%= actor.id %>/edit">Edit</a>
+
+<%- include('../partials/deleteForm', {url: `/actors/${actor.id }` }) %>
+
 
 <% }) %>
