@@ -61,9 +61,9 @@ router.post('/',  async (req, res) => {
     
     try {
         const newFilm = await film.save()
-        //res.redirect(`films/${newFilm.id}`)
+        res.redirect(`films/${newFilm.id}`)
         
-        res.redirect(`films`) 
+        //res.redirect(`films`) 
     } catch (error){
 
         renderNewScene(res, film, true)
@@ -73,8 +73,100 @@ router.post('/',  async (req, res) => {
     
 })
 
+//Show films route
+router.get('/:id', async (req, res) => {
+
+    try {
+        const film = await Film.findById(req.params.id).populate('actor').exec()
+        res.render('films/show', {film: film})
+    } catch (error) {
+        res.redirect('/') 
+    }
+   
+})  
+
+
+//Edit Film route
+router.get('/:id/edit', async (req, res) => {
+    const film = await Film.findById(req.params.id)
+    try {
+        renderEditScene(res, film)
+    } catch (error) {
+        res.redirect('/') 
+    }
+   
+})  
+
+//Update film route
+router.put('/:id',  async (req, res) => { 
+    
+   let film
+    
+    try {
+        film = await Film.findById(req.params.id)
+
+        film.title = req.body.title,
+        film.actor = req.body.actor,
+        film.publishDate = new Date(req.body.publishDate),
+        film.sceneCount = req.body.sceneCount,
+        film.description = req.body.description
+
+        if (req.body.cover != null && req.body.cover !== ''){
+            saveCover(film, req.body.cover)
+
+        }
+        await film.save()
+        res.redirect(`/films/, ${film.id} `)
+        
+    } catch (error){
+        if(film != null){
+            renderEditScene(res, film, true)
+        } else {
+            res.redirect('/')  
+        }
+       
+        //return res.send(error.message)
+    }
+
+    
+})
+
+//Delete film route
+router.delete('/:id',  async (req, res) => { 
+    
+   let film
+    try {
+        film = await Film.findById(req.params.id)
+        await film.remove()
+        res.redirect('/films')
+    } catch (error) {
+        if(film != null){
+           res.render('films/show', {
+            films: films,
+            errorMessage: 'CFould not remove film'  
+           })
+
+        } else{
+            res.redirect('/')
+        }
+    }     
+
+})
+
 
 async function renderNewScene(res, film, hasError = false){
+    
+    renderFormScene(res, film, 'new', hasError)
+        
+} 
+
+async function renderEditScene(res, film, hasError = false){
+    
+    renderFormScene(res, film, 'edit', hasError)
+        
+} 
+
+async function renderFormScene(res, film, form, hasError = false){
     
     try {
         const actors = await Actor.find({})
@@ -83,21 +175,26 @@ async function renderNewScene(res, film, hasError = false){
             actors: actors,
             film: film
         }
-        if (hasError) {params.errorMessage = 'Error Creating Film'}
+        if (hasError) {
+            if(form === edit){
+                params.errorMessage = 'Error Updating Film'
+
+            } else {
+            params.errorMessage = 'Error Creating Film'
+            }
+        }
 
         
-        res.render('films/new', params)
+        res.render(`films/${form}`, params)
       
-    } catch (error) {
-        // console.error(e)
-        // console.error(error)
+    } catch (err) {
+        console.log(err)
+        
         res.redirect('/films')
        
         }
         
 } 
-
-
 
  function saveCover(film, coverEncoded){
     //console.log(coverEncoded)

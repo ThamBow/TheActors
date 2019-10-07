@@ -1,0 +1,9 @@
+<h2>Edit Film</h2> 
+<form action="/films/<%= film.id %>?_method=PUT" method="POST" >
+
+   <%- include('_form_fields') %>
+    
+<a href="/films">Cancel</a>
+<button type="submit">Update</button>
+
+</form>

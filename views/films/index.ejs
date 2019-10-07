@@ -1,4 +1,4 @@
-<h2> Search Actors </h2>
+<h2> Search Film </h2>
 
 <form action="/films" method="GET">
    <div>
@@ -22,8 +22,8 @@
 
 <div>
 <% films.forEach(film => { %>
-
+<a href="/films/<%= film.id %>">
 <img height="100" width="80" src ="<%= film.coverImagePath %>">
-
+</a>
 <% }) %>
 </div>
