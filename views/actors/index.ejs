@@ -1,4 +1,4 @@
-<h2> Search Actors </h2>
+<h2 class="page-header"> Search Actors </h2>
 
 <form action="/actors" method="GET">
 
@@ -15,10 +15,10 @@
 <% actors.forEach(actor => { %>
 
 <div><%= actor.name %></div>
-<a href="/actors/<%= actor.id %>">View</a>
-<a href="/actors/<%= actor.id %>/edit">Edit</a>
+<div class="btn-row">
+<a class="btn btn-primary" href="/actors/<%= actor.id %>">View</a>
+<a class="btn btn-primary" href="/actors/<%= actor.id %>/edit">Edit</a>
 
 <%- include('../partials/deleteForm', {url: `/actors/${actor.id }` }) %>
-
-
+</div>
 <% }) %>
