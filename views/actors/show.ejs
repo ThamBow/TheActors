@@ -1,9 +1,10 @@
 <h2 class="page-header"><%= actor.name %></h2> 
-<a href="/actors/<%- actor.id %>/edit">Edit</a>
+<div class="btn-row">
+<a class="btn btn-primary" href="/actors/<%- actor.id %>/edit">Edit</a>
 <%- include('../partials/deleteForm', {url: `/actors/${actor.id }` }) %>
-
+</div>
 <% if (filmByActor.length > 0 ) {%>
-<h2>Films by Actor</h2>
+<h2 class="page-header">Films by Actor</h2>
 <% filmByActor.forEach(film => { %>
 <a href="/films/<%- film.id %>">
 <img height="100" width="80" src ="<%= film.coverImagePath %>">

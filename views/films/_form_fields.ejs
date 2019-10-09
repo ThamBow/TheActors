@@ -1,10 +1,9 @@
-<div><label>Title:</label>
+<div class="form-row">
+<div class="form-item"><label>Title:</label>
 <input type="text" name="title" value="<%= film.title %>">
-</div>
+</div><!-- end first item -->
 
-<br>
-
-<div>
+<div class="form-item">
 <label>Actor:</label>
 <select name="actor">
 
@@ -23,33 +22,32 @@
 <% }) %> 
 
 </select>
-</div>
+</div><!-- end second item -->
+</div><!-- end first row -->
 
-<br>
-
-<div>
+<div class="form-row">
+<div class="form-item">
 <label>Publish Date:</label>
 <input type="date" name="publishDate" value="<%= film.publishDate == null ? '' :
  film.publishDate.toISOString().split('T')[0] %>">
-</div>
+</div><!-- end publishdate item -->
 
-<br>
 
-<div>
+<div class="form-item">
 <label>Scene Count:</label>
 <input type="number" name="sceneCount" min="1" value="<%= film.sceneCount %>">
-</div>
+</div><!-- end scenecount item -->
+</div><!-- end second row -->
 
-<br>
-
-<div>
+<div class="form-row">
+<div class="form-item form-item-no-grow">
 <label>Cover:</label>
 <input type="file" name="cover" class="filepond" >
-</div>
+</div><!-- end cover item -->
 
-<br>
 
-<div>
+<div class="form-item">
 <label>Description:</label>
 <textarea name="description"><%= film.description %></textarea>
-</div>
+</div><!-- end description item -->
+</div><!-- end third row -->
