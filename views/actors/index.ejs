@@ -16,12 +16,13 @@
 <br>
 
 <% actors.forEach(actor => { %>
-
-<div><%= actor.name %></div>
+<div class="actor-row">
+<div class="actor-name"><%= actor.name %></div>
 <div class="btn-row">
 <a class="btn btn-primary" href="/actors/<%= actor.id %>">View</a>
 <a class="btn btn-primary" href="/actors/<%= actor.id %>/edit">Edit</a>
 
 <%- include('../partials/deleteForm', {url: `/actors/${actor.id }` }) %>
-</div>
+</div><!-- end btn-row -->
+</div><!-- end actor-row -->
 <% }) %>

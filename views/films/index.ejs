@@ -27,11 +27,9 @@
 </div>
 
 </form>
+<br>
+<%- include('../partials/filmGrid', {films: films, large: true }) %>
 
-<div>
-<% films.forEach(film => { %>
-<a href="/films/<%= film.id %>">
-<img height="100" width="80" src ="<%= film.coverImagePath %>">
-</a>
-<% }) %>
-</div>
+
+
+

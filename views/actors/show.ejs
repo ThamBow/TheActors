@@ -2,12 +2,9 @@
 <div class="btn-row">
 <a class="btn btn-primary" href="/actors/<%- actor.id %>/edit">Edit</a>
 <%- include('../partials/deleteForm', {url: `/actors/${actor.id }` }) %>
-</div>
+</div><!-- end btn-row -->
 <% if (filmByActor.length > 0 ) {%>
 <h2 class="page-header">Films by Actor</h2>
-<% filmByActor.forEach(film => { %>
-<a href="/films/<%- film.id %>">
-<img height="100" width="80" src ="<%= film.coverImagePath %>">
-</a>
-<% }) %>
+
+<%- include('../partials/filmGrid', {films: filmByActor }) %>
 <% } %>

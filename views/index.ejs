@@ -2,10 +2,24 @@
 
 <h2 class="page-header">Recently Added</h2>
 
-<div>
-<% films.forEach((film) => { %>
-<a href="/films/<%- film.id %>">
-<img height="100" width="80" src ="<%= film.coverImagePath %>">
-</a>
-<% }) %>
-</div>
+<%- include('partials/filmGrid', {films: films, large: true }) %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

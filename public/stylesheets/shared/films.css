@@ -1,0 +1,63 @@
+:root{
+    --film-cover-width: 200px;
+    --film-cover-width-large: 325px;
+    --film-cover-aspect-ratio: .75;
+    
+}
+
+.film-cover{
+    width: var(--film-cover-width);
+    height: calc(var(--film-cover-width) / var(--film-cover-aspect-ratio));
+}
+
+.film-cover-large{
+    --film-cover-width: var(--film-cover-width-large);
+}
+
+.film-grid{
+    display: grid;
+    justify-content: center;
+    grid-column-gap: 7rem;
+    grid-row-gap: 1rem;
+    grid-template-columns: repeat(auto-fill, var(--film-cover-width));
+}
+
+.film-grid-large{
+    grid-template-columns: repeat(auto-fill, var(--film-cover-width-large));
+}
+
+.film-details{
+    display: flex;
+
+}
+
+.film-details-label{
+    font-size: 1.2rem;
+    font-weight: 500;
+    align-self: flex-start;
+}
+
+.film-details-grid{
+    display: grid;
+    align-content: flex-start;
+    align-items: center;
+    grid-gap: 1rem;
+    grid-template-columns: auto auto;
+}
+
+.film-details-btn-grid{
+    display: grid;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
+    grid-template-areas: 
+    "edit delete"
+    "actor actor";
+    grid-gap: 0.5rem;
+    margin: 0.5rem 1.5rem 0.5rem 0rem;
+}
+
+.film-details-actor-button{
+    grid-area: actor;
+    justify-self: stretch;
+}

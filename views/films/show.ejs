@@ -1,11 +1,25 @@
 <h2 class="page-header"><%= film.title %></h2>
-<img src="<%= film.coverImagePath %>"> 
-<div>Actor: <%= film.actor.name %></div>
-<div>Publish Date: <%= film.publishDate.toDateString() %></div>
-
-<div>Scene Count: <%= film.sceneCount %></div>
-<div>Description: <%= film.description %></div>
-
-<a href="/films/<%= film.id %>/edit">Edit</a>
+<div class="film-details">
+<div>
+<img class="film-cover" src="<%= film.coverImagePath %>">
+<div class="film-details-btn-grid"> 
+<a class="btn btn-primary" href="/films/<%= film.id %>/edit">Edit</a>
 <%- include('../partials/deleteForm', {url: `/films/${film.id }` }) %>
-<a href="/actors/<%= film.actor.id %>">View Actor</a>
+<a class="btn btn-primary film-details-actor-button" href="/actors/<%= film.actor.id %>">View Actor</a>
+</div>
+</div>
+
+<div class="film-details-grid"> 
+
+<div class="film-details-label">Actor:</div>
+<div><%= film.actor.name %></div>
+<div class="film-details-label">Publish Date:</div>
+<div><%= film.publishDate.toDateString() %></div>
+<div class="film-details-label">Scene Count:</div>
+<div><%= film.sceneCount %></div>
+<div class="film-details-label">Description:</div>
+<div><%= film.description %></div>
+
+</div>
+
+</div>

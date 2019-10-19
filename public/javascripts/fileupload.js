@@ -1,14 +1,32 @@
-FilePond.registerPlugin(
-    FilePondPluginImagePreview,
-    FilePondPluginImageResize,
-    FilePondPluginFileEncode
-    );
+/* import { readSync } from "fs"; */
 
-    FilePond.setOptions({
-        stylePanelAspectRatio: 100 / 80,
-        imageResizeTargetWidth: 80,
-        imageResizeTargetHeight: 100
+const rootStyles = window.getComputedStyle(document.documentElement)
 
-    })   
+if(rootStyles.getPropertyValue('--film-cover-width-large') != null && rootStyles.getPropertyValue('--film-cover-width-large') !== '' ){
+    ready()
+} else {
+    document.getElementById('main-css').addEventListener('load', ready)
+}
 
-FilePond.parse(document.body);
+function ready(){
+    const coverWidth = parseFloat(rootStyles.getPropertyValue('--film-cover-width-large'))
+    const coverAspectRatio = parseFloat(rootStyles.getPropertyValue('--film-cover-aspect-ratio'))
+    const coverHeight = coverWidth / coverAspectRatio
+
+    FilePond.registerPlugin(
+        FilePondPluginImagePreview,
+        FilePondPluginImageResize,
+        FilePondPluginFileEncode
+        );
+    
+        FilePond.setOptions({
+            stylePanelAspectRatio: coverAspectRatio,
+            imageResizeTargetWidth: coverWidth,
+            imageResizeTargetHeight: coverHeight
+    
+        })   
+    
+    FilePond.parse(document.body);
+
+}
+
